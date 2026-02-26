@@ -1,7 +1,9 @@
 package com.example.first_proj.model;
 
+import com.example.first_proj.model.reference.Role;
+import com.example.first_proj.model.reference.Specialty;
 import jakarta.persistence.*;
-
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -9,49 +11,94 @@ import java.util.Random;
 public class Physician {
 
     @Id
-    private String hpcsaNumber; // The Primary Key
+    private String hpcsaId; // The custom generated PK
 
-    // These fields are used to capture the form data
-    @Transient // @Transient means 'dont save this specific column to the database'"
-    private String inputFirstName;
+    @Column(length = 13, unique = true)
+    private String physicianRsaId;
 
-    @Transient
-    private String inputSurname;
-
-    // These fields ARE saved to the database
     private String physicianName;
-    private String specialty;
+    private String physicianSurname;
 
-    public Physician() {}
+    // Many Physicians can have One Role
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    // GETTERS
-    public String getHpcsaNumber() { return hpcsaNumber; }
-    public String getInputFirstName() { return inputFirstName; }
-    public String getInputSurname() { return inputSurname; }
-    public String getPhysicianName() { return physicianName; }
-    public String getSpecialty() { return specialty; }
+    // Many Physicians can have One Specialty
+    @ManyToOne
+    @JoinColumn(name = "specialty_code")
+    private Specialty specialty;
 
-    // SETTERS
-    public void setHpcsaNumber(String hpcsaNumber) { this.hpcsaNumber = hpcsaNumber; }
-    public void setInputFirstName(String inputFirstName) { this.inputFirstName = inputFirstName; }
-    public void setInputSurname(String inputSurname) { this.inputSurname = inputSurname; }
-    public void setPhysicianName(String physicianName) { this.physicianName = physicianName; }
-    public void setSpecialty(String specialty) { this.specialty = specialty; }
+    // One Physician treats Many Patients
+    @OneToMany(mappedBy = "treatingPhysician")
+    private List<Patient> treatedPatients;
+
+    public String getHpcsaId() {
+        return hpcsaId;
+    }
+
+    public void setHpcsaId(String hpcsaId) {
+        this.hpcsaId = hpcsaId;
+    }
+
+    public String getPhysicianRsaId() {
+        return physicianRsaId;
+    }
+
+    public void setPhysicianRsaId(String physicianRsaId) {
+        this.physicianRsaId = physicianRsaId;
+    }
+
+    public String getPhysicianName() {
+        return physicianName;
+    }
+
+    public void setPhysicianName(String physicianName) {
+        this.physicianName = physicianName;
+    }
+
+    public String getPhysicianSurname() {
+        return physicianSurname;
+    }
+
+    public void setPhysicianSurname(String physicianSurname) {
+        this.physicianSurname = physicianSurname;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Specialty getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
+    }
+
+    public List<Patient> getTreatedPatients() {
+        return treatedPatients;
+    }
+
+    public void setTreatedPatients(List<Patient> treatedPatients) {
+        this.treatedPatients = treatedPatients;
+    }
 
     @PrePersist
     public void formatDataAndGenerateId() {
-        // 1. Format the display name
-        if (this.inputFirstName != null && this.inputSurname != null) {
-            this.physicianName = "Dr. " + this.inputFirstName.trim() + " " + this.inputSurname.trim();
-        }
 
-        // 2. Generate the HPCSA Number (e.g., JOHSMI12345)
-        if (this.hpcsaNumber == null) {
-            String firstPart = String.format("%-3s", this.inputFirstName).replace(' ', 'X').substring(0, 3).toUpperCase();
-            String secondPart = String.format("%-3s", this.inputSurname).replace(' ', 'X').substring(0, 3).toUpperCase();
+        // Generate the HPCSA Number (e.g., JOHSMI12345)
+        if (this.hpcsaId == null) {
+            String firstPart = String.format("%-3s", this.physicianName).replace(' ', 'X').substring(0, 3).toUpperCase();
+            String secondPart = String.format("%-3s", this.physicianSurname).replace(' ', 'X').substring(0, 3).toUpperCase();
             String randomNums = String.format("%05d", new Random().nextInt(100000));
 
-            this.hpcsaNumber = firstPart + secondPart + randomNums;
+            this.hpcsaId = firstPart + secondPart + randomNums;
         }
     }
 }
