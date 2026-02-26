@@ -8,7 +8,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container">
-    <a class="navbar-brand" href="#">Clinic Admin</a>
+    <a class="navbar-brand" href="#">Clinical Management System</a>
     <div class="navbar-nav">
       <a class="nav-link" th:href="@{/patients}">Patients</a>
       <a class="nav-link active" th:href="@{/physicians}">Physicians</a>
@@ -25,25 +25,35 @@
     </div>
     <div class="card-body">
       <form th:action="@{/physicians}" th:object="${newPhysician}" method="post" class="row g-3">
-        <div class="col-md-3">
-          <label for="inputFirstName" class="form-label">First Name</label>
-          <input type="text" id="inputFirstName" th:field="*{inputFirstName}" class="form-control" required placeholder="e.g. Sarah" />
-        </div>
-        <div class="col-md-3">
-          <label for="inputSurname" class="form-label">Surname</label>
-          <input type="text" id="inputSurname" th:field="*{inputSurname}" class="form-control" required placeholder="e.g. Connor" />
+
+        <div class="col-md-4">
+          <label for="physicianRsaId" class="form-label">RSA ID Number</label>
+          <input type="text" id="physicianRsaId" th:field="*{physicianRsaId}" class="form-control" required maxlength="13" />
         </div>
         <div class="col-md-4">
+          <label for="inputFirstName" class="form-label">First Name</label>
+          <input type="text" id="inputFirstName" th:field="*{inputFirstName}" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+          <label for="inputSurname" class="form-label">Surname</label>
+          <input type="text" id="inputSurname" th:field="*{inputSurname}" class="form-control" required />
+        </div>
+
+        <div class="col-md-5">
+          <label for="role" class="form-label">Role</label>
+          <select id="role" th:field="*{role}" class="form-select" required>
+            <option value="" disabled selected>Select a role...</option>
+            <option th:each="r : ${rolesList}" th:value="${r.roleId}" th:text="${r.roleTitle + ' - ' + r.roleName}"></option>
+          </select>
+        </div>
+        <div class="col-md-5">
           <label for="specialty" class="form-label">Specialty</label>
           <select id="specialty" th:field="*{specialty}" class="form-select" required>
             <option value="" disabled selected>Select a specialty...</option>
-            <option value="General Practitioner">General Practitioner</option>
-            <option value="Orthopaedic Surgeon">Orthopaedic Surgeon</option>
-            <option value="Gynaecologist">Gynaecologist</option>
-            <option value="Cardiologist">Cardiologist</option>
-            <option value="Neurologist">Neurologist</option>
+            <option th:each="s : ${specialtiesList}" th:value="${s.specialtyCode}" th:text="${s.specialtyTitle}"></option>
           </select>
         </div>
+
         <div class="col-md-2 d-flex align-items-end">
           <button type="submit" class="btn btn-success w-100">Add Physician</button>
         </div>
@@ -52,26 +62,29 @@
   </div>
 
   <div class="card shadow-sm">
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
       <table class="table table-striped table-hover mb-0">
         <thead class="table-dark">
         <tr>
-          <th>HPCSA Number (ID)</th>
+          <th>HPCSA Number</th>
+          <th>RSA ID</th>
           <th>Physician Name</th>
+          <th>Role</th>
           <th>Specialty</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="doc : ${physicians}">
-          <td th:text="${doc.hpcsaNumber}">ABCDEF12345</td>
-          <td th:text="${doc.physicianName}">Dr. Sarah Connor</td>
-          <td th:text="${doc.specialty}">Orthopaedic Surgeon</td>
+          <td th:text="${doc.hpcsaId}">ABCDEF12345</td>
+          <td th:text="${doc.physicianRsaId}">9001015000000</td>
+          <td th:text="${doc.physicianName + ' ' + doc.physicianSurname}">Dr. Sarah Connor</td>
+          <td th:text="${doc.role?.roleName}">Medical Officer</td>
+          <td th:text="${doc.specialty?.specialtyTitle}">Orthopaedic Surgeon</td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-
 </body>
 </html>

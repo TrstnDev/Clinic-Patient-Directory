@@ -39,13 +39,13 @@ public class PatientController {
         if (keyword != null && !keyword.trim().isEmpty() && searchType != null) {
             switch (searchType) {
                 case "Name":
-                    patients = patientRepository.findByNameContainingIgnoreCase(keyword);
+                    patients = patientRepository.findByPatientNameContainingIgnoreCase(keyword);
                     break;
                 case "ID":
-                    patients = patientRepository.findByIdContainingIgnoreCase(keyword);
+                    patients = patientRepository.findByPatientIdContainingIgnoreCase(keyword);
                     break;
                 case "Diagnosis":
-                    patients = patientRepository.findByDiagnosisContainingIgnoreCase(keyword);
+                    patients = patientRepository.findByPrimaryDiagnosis_DiagnosisNameContainingIgnoreCase(keyword);
                     break;
                 case "Physician":
                     patients = patientRepository.findByTreatingPhysician_PhysicianNameContainingIgnoreCase(keyword);

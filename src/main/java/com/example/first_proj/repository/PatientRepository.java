@@ -9,13 +9,13 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, String> {
 
     // 1. Search by Patient Name
-    List<Patient> findByNameContainingIgnoreCase(String name);
+    List<Patient> findByPatientNameContainingIgnoreCase(String patientName);
 
     // 2. Search by ID
-    List<Patient> findByIdContainingIgnoreCase(String id);
+    List<Patient> findByPatientIdContainingIgnoreCase(String patientId);
 
     // 3. Search by Diagnosis
-    List<Patient> findByDiagnosisContainingIgnoreCase(String diagnosis);
+    List<Patient> findByPrimaryDiagnosis_DiagnosisNameContainingIgnoreCase(String diagnosisName);
 
     // 4. Search by Treating Physician's Name
     List<Patient> findByTreatingPhysician_PhysicianNameContainingIgnoreCase(String physicianName);

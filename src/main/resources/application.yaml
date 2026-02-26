@@ -1,9 +1,9 @@
 spring:
   datasource:
     # Port, database name, and credentials match docker container setup
-    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=true;trustServerCertificate=true;
+    url: "jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=true;trustServerCertificate=true;"
     username: sa
-    password: ${DB_PASSWORD}
+    password: Delta66680003*
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
