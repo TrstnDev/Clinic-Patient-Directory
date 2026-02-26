@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,17 +26,47 @@ public class PatientController {
 
     // 1. The GET request (loads the page)
     @GetMapping("/patients")
-    public String listPatients(Model model) {
-        // Pass the list of all patients to display in the table
-        model.addAttribute("patients", patientRepository.findAll());
+    public String listPatients(
+            @RequestParam(name = "searchType", required = false) String searchType,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            Model model) {
 
-        // Pass a new, empty Patient object for the form to fill out
+        List<Patient> patients;
+
+        // The Search logic
+        if (keyword != null && !keyword.trim().isEmpty() && searchType != null) {
+            switch (searchType) {
+                case "Name":
+                    patients = patientRepository.findByNameContainingIgnoreCase(keyword);
+                    break;
+                case "ID":
+                    patients = patientRepository.findByIdContainingIgnoreCase(keyword);
+                    break;
+                case "Diagnosis":
+                    patients = patientRepository.findByDiagnosisContainingIgnoreCase(keyword);
+                    break;
+                case "Physician":
+                    patients = patientRepository.findByTreatingPhysician_PhysicianNameContainingIgnoreCase(keyword);
+                    break;
+                default:
+                    patients = patientRepository.findAll();
+            }
+        } else {
+            // If no search is active, show everyone
+            patients = patientRepository.findAll();
+        }
+
+        // Pass the filtered list (or all patients) to the view
+        model.addAttribute("patients", patients);
+
+        // Pass the empty objects and lists needed for the "Admit Patient" form
         model.addAttribute("newPatient", new Patient());
-
-        // Fetch all physicians and send them to the HTML page as "physiciansList"
         model.addAttribute("physiciansList", physicianRepository.findAll());
 
-        // Return the name of the ThymeLeaf HTML template to render
+        // Pass the search terms back to the view so the search bar doesn't clear itself after clicking search
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("keyword", keyword);
+
         return "patients";
     }
 
