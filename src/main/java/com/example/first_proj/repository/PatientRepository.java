@@ -15,5 +15,5 @@ public interface PatientRepository extends JpaRepository<Patient, String> {
     List<Patient> findByDiagnosisContainingIgnoreCase(String diagnosis);
 
     // Deep Search: Looks inside the linked Physician object to search by the Physician's name
-    List<Patient> findByTreatingPhysicianNameContainingIgnoreCase(String physicianName);
+    List<Patient> findByTreatingPhysician_PhysicianNameContainingIgnoreCase(String physicianName);
 }
