@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: arm64v8/postgres:18.3
+    container_name: clinic_db
+    environment:
+      POSTGRES_USER: clinic_admin
+      POSTGRES_PASSWORD: Delta66680003*
+      POSTGRES_DB: clinic_directory
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:

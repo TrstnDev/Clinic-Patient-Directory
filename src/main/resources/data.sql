@@ -1,0 +1,65 @@
+-- Populate Medical Roles
+INSERT INTO role (role_id, role_name, role_title) VALUES ('MO', 'Medical Officer', 'Dr.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('REG', 'Registrar', 'Dr.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('SPEC', 'Specialist', 'Dr.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('PROF', 'Professor', 'Prof.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('CSO', 'Community Service Officer', 'Dr.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('HOD', 'Head of Department', 'Prof.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('INT', 'Intern', 'Dr.');
+INSERT INTO role (role_id, role_name, role_title) VALUES ('FELL', 'Fellow', 'Dr.');
+
+-- Populate Clinical Specialties
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('GP', 'General Practice');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ORTHSURG', 'Orthopaedic Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('CARD', 'Cardiology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('NEURO', 'Neurology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('GYNAE', 'Gynaecology & Obstetrics');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PAED', 'Paediatrics');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('INTMED', 'Internal Medicine');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('TRAUMA', 'Trauma & Emergency');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('FAM', 'Family Medicine');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('GENSURG', 'General Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('NEURSURG', 'Neurosurgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('CARDTHOR', 'Cardiothoracic Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('GERI', 'Geriatrics');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('DERM', 'Dermatology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ONCO', 'Oncology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ENDO', 'Endocrinology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('GASTRO', 'Gastroenterology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('NEPHRO', 'Nephrology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('RHEUM', 'Rheumatology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('RAD', 'Radiology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PSYCH', 'Psychiatry');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('IMMUN', 'Allergy & Immunology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('OPHTH', 'Ophthalmology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ANAES', 'Anaesthesiology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PHARM', 'Clinical Pharmacology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ENT', 'Otorhinolaryngology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PAEDSURG', 'Paediatric Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('FOREN', 'Forensic Medicine');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('MICRO', 'Microbiology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('VIR', 'Virology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PLAST', 'Plastic & Reconstructive Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('URO', 'Urology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('VASC', 'Vascular Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PULM', 'Pulmonology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('INFDIS', 'Infectious Diseases');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('HAEM', 'Haematology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('MEDGEN', 'Medical Genetics');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('NEO', 'Neonatology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('ICMED', 'Intensive Care Medicine');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('NUCL', 'Nuclear Medicine');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('MAXSURG', 'Oral and Maxillofacial Surgery');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PAL', 'Palliative Care');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PATH', 'Pathology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('PAEDCARD', 'Paediatric Cardiology');
+INSERT INTO specialty (specialty_code, specialty_title) VALUES ('TOX', 'Toxicology');
+
+-- Populate Common ICD-10 Diagnoses
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('J20.9', 'Acute bronchitis', 'Acute bronchitis, unspecified');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('G03.9', 'Meningitis', 'Meningitis, unspecified');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('J31.0', 'Chronic rhinitis', 'Chronic rhinitis');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('I10', 'Essential hypertension', 'Essential (primary) hypertension');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('E11.9', 'Type 2 diabetes', 'Type 2 diabetes mellitus without complications');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('S82.0', 'Fracture of patella', 'Fracture of patella, closed');
+INSERT INTO diagnosis (icd10code, diagnosis_name, diagnosis_description) VALUES ('Z00.0', 'General medical exam', 'General medical examination, adult');

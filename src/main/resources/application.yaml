@@ -1,11 +1,11 @@
 spring:
   datasource:
     # Port, database name, and credentials match docker container setup
-    url: "jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=true;trustServerCertificate=true;"
-    username: sa
+    url: "jdbc:postgresql://localhost:5432/clinic_directory"
+    username: clinic_admin
     password: Delta66680003*
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
