@@ -3,9 +3,11 @@ package com.example.first_proj.controller;
 import com.example.first_proj.model.Patient;
 import com.example.first_proj.repository.PatientRepository;
 import com.example.first_proj.repository.PhysicianRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,9 +74,16 @@ public class PatientController {
 
     // 2. The POST request (saves the data)
     @PostMapping("/patients")
-    public String savePatient(@ModelAttribute("newPatient") Patient patient) {
-        // Spring automatically takes the form inputs and builds the 'patient' object
-        // Now, we just tell the repository to save it to the SQL Server
+    public String savePatient(@Valid @ModelAttribute("newPatient") Patient patient, BindingResult bindingResult, Model model) {
+
+        // Check if custom validation failed
+        if (bindingResult.hasErrors()) {
+            // if there are errors reload the dropdowns before sending user back to the form
+            model.addAttribute("physiciansList", physicianRepository.findAll());
+            // return the HTML page without redirecting so thymeleaf can display errors
+            return "patients";
+        }
+
         patientRepository.save(patient);
 
         // Redirect back to the GET route to refresh the table and clear the form

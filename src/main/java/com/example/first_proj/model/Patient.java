@@ -5,13 +5,17 @@ import java.util.Random;
 import java.time.LocalDate;
 import com.example.first_proj.model.reference.Diagnosis;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.example.first_proj.model.validation.ValidRsaIdMatchingDob;
 
 @Entity
+@ValidRsaIdMatchingDob
 public class Patient {
     @Id
     private String patientId;
 
+    @NotNull(message = "RSA ID is required")
     @Column(length = 13, unique = true)
     private String patientRsaId;
 
@@ -22,6 +26,7 @@ public class Patient {
     private String patientEmail;
     private String patientAddress;
 
+    @NotNull(message = "Date of Birth is required")
     private LocalDate dateOfBirth;
 
     @Column(nullable = false)
