@@ -2,6 +2,7 @@ package com.example.first_proj.controller;
 
 import com.example.first_proj.model.Patient;
 import com.example.first_proj.repository.PatientRepository;
+import com.example.first_proj.repository.PhysicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,9 @@ public class PatientController {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private PhysicianRepository physicianRepository;
+
     // 1. The GET request (loads the page)
     @GetMapping("/patients")
     public String listPatients(Model model) {
@@ -26,6 +30,9 @@ public class PatientController {
 
         // Pass a new, empty Patient object for the form to fill out
         model.addAttribute("newPatient", new Patient());
+
+        // Fetch all physicians and send them to the HTML page as "physiciansList"
+        model.addAttribute("physiciansList", physicianRepository.findAll());
 
         // Return the name of the ThymeLeaf HTML template to render
         return "patients";

@@ -6,46 +6,55 @@
 </head>
 <body class="bg-light">
 
-<div class="container mt-5">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Clinic Admin</a>
+        <div class="navbar-nav">
+            <a class="nav-link active" th:href="@{/patients}">Patients</a>
+            <a class="nav-link" th:href="@{/physicians}">Physicians</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
     <h1 class="mb-4 text-primary">Clinic Patient Directory</h1>
 
-    <div class="card shadow-sm mb-5">
-
-
-        <div class="card-header bg-white">
-            <h4 class="mb-0">Add New Patient</h4>
+    <div class="card shadow-sm mb-5 border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Admit New Patient</h4>
         </div>
         <div class="card-body">
             <form th:action="@{/patients}" th:object="${newPatient}" method="post" class="row g-3">
-                <div class="col-md-5">
+
+                <div class="col-md-6">
                     <label for="name" class="form-label">Patient Name</label>
                     <input type="text" id="name" th:field="*{name}" class="form-control" required placeholder="e.g. Jane Doe" />
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label for="diagnosis" class="form-label">Diagnosis</label>
                     <input type="text" id="diagnosis" th:field="*{diagnosis}" class="form-control" required placeholder="e.g. Common Cold" />
                 </div>
+
+                <div class="col-md-3">
+                    <label for="admissionDate" class="form-label">Admission Date</label>
+                    <input type="date" id="admissionDate" th:field="*{admissionDate}" class="form-control" required />
+                </div>
+                <div class="col-md-3">
+                    <label for="dischargeDate" class="form-label">Discharge Date (Optional)</label>
+                    <input type="date" id="dischargeDate" th:field="*{dischargeDate}" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label for="treatingPhysician" class="form-label">Assign Treating Physician</label>
+                    <select id="treatingPhysician" th:field="*{treatingPhysician}" class="form-select" required>
+                        <option value="" disabled selected>Select a physician...</option>
+                        <option th:each="doc : ${physiciansList}"
+                                th:value="${doc.hpcsaNumber}"
+                                th:text="${doc.physicianName + ' - ' + doc.specialty}"></option>
+                    </select>
+                </div>
+
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Add Patient</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-
-    <div class="card shadow-sm mb-4 border-danger">
-        <div class="card-body">
-            <form th:action="@{/patients/delete-request}" method="post" class="row g-3 align-items-center">
-                <div class="col-auto">
-                    <label for="patientId" class="col-form-label fw-bold text-danger">Delete Patient by ID:</label>
-                </div>
-                <div class="col-auto">
-                    <input type="text" id="patientId" name="patientId" class="form-control" placeholder="e.g. JOH1234" required />
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-outline-danger">Request Deletion</button>
+                    <button type="submit" class="btn btn-primary w-100">Admit Patient</button>
                 </div>
             </form>
         </div>
@@ -59,13 +68,23 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Diagnosis</th>
+                    <th>Admission</th>
+                    <th>Discharge</th>
+                    <th>Treating Physician</th>
+                    <th>Specialty</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="patient : ${patients}">
-                    <td th:text="${patient.id}">1</td>
+                    <td th:text="${patient.id}">JOH1234</td>
                     <td th:text="${patient.name}">John Doe</td>
                     <td th:text="${patient.diagnosis}">Healthy</td>
+
+                    <td th:text="${#temporals.format(patient.admissionDate, 'dd-MM-yyyy')}">01-01-2026</td>
+                    <td th:text="${patient.dischargeDate != null ? #temporals.format(patient.dischargeDate, 'dd-MM-yyyy') : 'N/A'}">05-01-2026</td>
+
+                    <td th:text="${patient.treatingPhysician?.physicianName}">Dr. Smith</td>
+                    <td th:text="${patient.treatingPhysician?.specialty}">Cardiologist</td>
                 </tr>
                 </tbody>
             </table>
@@ -73,6 +92,5 @@
     </div>
 
 </div>
-
 </body>
 </html>
