@@ -3,6 +3,7 @@ package com.example.first_proj.controller;
 import com.example.first_proj.model.Patient;
 import com.example.first_proj.repository.PatientRepository;
 import com.example.first_proj.repository.PhysicianRepository;
+import com.example.first_proj.repository.DiagnosisRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +26,11 @@ public class PatientController {
     @Autowired
     private PhysicianRepository physicianRepository;
 
-    // 1. The GET request (loads the page)
+    @Autowired
+    private DiagnosisRepository diagnosisRepository;
+
+
+    // GET requests
     @GetMapping("/patients")
     public String listPatients(
             @RequestParam(name = "searchType", required = false) String searchType,
@@ -35,7 +39,7 @@ public class PatientController {
 
         List<Patient> patients;
 
-        // The Search logic
+        // Search logic
         if (keyword != null && !keyword.trim().isEmpty() && searchType != null) {
             switch (searchType) {
                 case "Name":
@@ -58,35 +62,37 @@ public class PatientController {
             patients = patientRepository.findAll();
         }
 
-        // Pass the filtered list (or all patients) to the view
+        // Pass everything to the view
         model.addAttribute("patients", patients);
-
-        // Pass the empty objects and lists needed for the "Admit Patient" form
         model.addAttribute("newPatient", new Patient());
         model.addAttribute("physiciansList", physicianRepository.findAll());
+        model.addAttribute("diagnosesList", diagnosisRepository.findAll());
 
-        // Pass the search terms back to the view so the search bar doesn't clear itself after clicking search
+        // Pass search terms back to the view so search bar doesn't clear itself
         model.addAttribute("searchType", searchType);
         model.addAttribute("keyword", keyword);
 
         return "patients";
     }
 
-    // 2. The POST request (saves the data)
+    // POST requests
     @PostMapping("/patients")
     public String savePatient(@Valid @ModelAttribute("newPatient") Patient patient, BindingResult bindingResult, Model model) {
 
-        // Check if custom validation failed
+        // Check if custom validations failed
         if (bindingResult.hasErrors()) {
             // if there are errors reload the dropdowns before sending user back to the form
+            model.addAttribute("patients", patientRepository.findAll());
             model.addAttribute("physiciansList", physicianRepository.findAll());
+            model.addAttribute("diagnosesList", diagnosisRepository.findAll());
+
             // return the HTML page without redirecting so thymeleaf can display errors
             return "patients";
         }
 
         patientRepository.save(patient);
 
-        // Redirect back to the GET route to refresh the table and clear the form
+        // Redirect to GET route to refresh the table and clear the form
         return "redirect:/patients";
     }
 

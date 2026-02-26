@@ -2,6 +2,8 @@ package com.example.first_proj.controller;
 
 import com.example.first_proj.model.Physician;
 import com.example.first_proj.repository.PhysicianRepository;
+import com.example.first_proj.repository.RoleRepository;
+import com.example.first_proj.repository.SpecialtyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,17 +19,26 @@ public class PhysicianController {
     @Autowired
     private PhysicianRepository physicianRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private SpecialtyRepository specialtyRepository;
+
     @GetMapping
     public String listPhysicians(Model model) {
         model.addAttribute("physicians", physicianRepository.findAll());
         model.addAttribute("newPhysician", new Physician());
+
+        // Passing reference data to populate HTML dropdowns
+        model.addAttribute("rolesList", roleRepository.findAll());
+        model.addAttribute("specialtiesList", specialtyRepository.findAll());
+
         return "physicians";
     }
 
     @PostMapping
     public String savePhysician(@ModelAttribute("newPhysician") Physician physician) {
-        // Here the form passes in inputFirstName, inputSurname, and specialty
-        // When save() is called, the @PrePersist method automatically fires to generate the HPCSA number and the formatted "Dr. First Last" name
         physicianRepository.save(physician);
         return "redirect:/physicians";
     }
