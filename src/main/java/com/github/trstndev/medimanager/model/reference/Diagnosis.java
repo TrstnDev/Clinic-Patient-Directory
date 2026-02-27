@@ -1,4 +1,4 @@
-package com.example.first_proj.model.reference;
+package com.github.trstndev.medimanager.model.reference;
 
 import jakarta.persistence.*;
 

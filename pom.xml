@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>first_proj</artifactId>
+    <artifactId>medimanager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>first_proj</name>
-    <description>first_proj</description>
+    <name>MediManager</name>
+    <description>Clinic Patient Directory</description>
     <url/>
     <licenses>
         <license/>

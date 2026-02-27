@@ -1,7 +1,7 @@
-package com.example.first_proj.model;
+package com.github.trstndev.medimanager.model;
 
-import com.example.first_proj.model.reference.Diagnosis;
-import com.example.first_proj.model.validation.ValidRsaIdMatchingDob;
+import com.github.trstndev.medimanager.model.reference.Diagnosis;
+import com.github.trstndev.medimanager.model.validation.ValidRsaIdMatchingDob;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
-package com.example.first_proj.repository;
+package com.github.trstndev.medimanager.repository;
 
-import com.example.first_proj.model.Physician;
+import com.github.trstndev.medimanager.model.Physician;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

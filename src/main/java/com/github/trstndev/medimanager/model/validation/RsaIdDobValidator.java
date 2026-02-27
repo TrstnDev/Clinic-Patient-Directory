@@ -1,6 +1,6 @@
-package com.example.first_proj.model.validation;
+package com.github.trstndev.medimanager.model.validation;
 
-import com.example.first_proj.model.Patient;
+import com.github.trstndev.medimanager.model.Patient;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.time.format.DateTimeFormatter;

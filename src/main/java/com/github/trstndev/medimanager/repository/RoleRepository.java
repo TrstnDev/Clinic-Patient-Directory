@@ -1,6 +1,6 @@
-package com.example.first_proj.repository;
+package com.github.trstndev.medimanager.repository;
 
-import com.example.first_proj.model.reference.Role;
+import com.github.trstndev.medimanager.model.reference.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

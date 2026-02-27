@@ -1,9 +1,9 @@
-package com.example.first_proj.controller;
+package com.github.trstndev.medimanager.controller;
 
-import com.example.first_proj.model.Patient;
-import com.example.first_proj.repository.PatientRepository;
-import com.example.first_proj.repository.PhysicianRepository;
-import com.example.first_proj.repository.DiagnosisRepository;
+import com.github.trstndev.medimanager.model.Patient;
+import com.github.trstndev.medimanager.repository.PatientRepository;
+import com.github.trstndev.medimanager.repository.PhysicianRepository;
+import com.github.trstndev.medimanager.repository.DiagnosisRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

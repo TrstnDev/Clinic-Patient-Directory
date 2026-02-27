@@ -1,4 +1,4 @@
-package com.example.first_proj.model.validation;
+package com.github.trstndev.medimanager.model.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,6 +1,6 @@
-package com.example.first_proj.model.reference;
+package com.github.trstndev.medimanager.model.reference;
 
-import com.example.first_proj.model.Physician;
+import com.github.trstndev.medimanager.model.Physician;
 import jakarta.persistence.*;
 import java.util.List;
 

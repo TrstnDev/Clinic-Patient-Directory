@@ -1,10 +1,10 @@
-package com.example.first_proj;
+package com.github.trstndev.medimanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FirstProjApplicationTests {
+class MediManagerApplicationTests {
 
     @Test
     void contextLoads() {

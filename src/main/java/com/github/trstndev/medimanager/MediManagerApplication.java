@@ -1,13 +1,13 @@
-package com.example.first_proj;
+package com.github.trstndev.medimanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FirstProjApplication {
+public class MediManagerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FirstProjApplication.class, args);
+        SpringApplication.run(MediManagerApplication.class, args);
     }
 
 }

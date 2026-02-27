@@ -1,7 +1,7 @@
-package com.example.first_proj.model;
+package com.github.trstndev.medimanager.model;
 
-import com.example.first_proj.model.reference.Role;
-import com.example.first_proj.model.reference.Specialty;
+import com.github.trstndev.medimanager.model.reference.Role;
+import com.github.trstndev.medimanager.model.reference.Specialty;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Random;
