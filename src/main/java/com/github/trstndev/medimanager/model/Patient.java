@@ -71,12 +71,13 @@ public class Patient {
             joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "icd10_code")
     )
+
     private List<Diagnosis> patientDifferentials;
 
 
     // Treating Physician (Many Patients can be treated by One Physician)
     @ManyToOne
-    @JoinColumn(name = "hpcsa_id")
+    @JoinColumn(name = "physician_id")
     private Physician treatingPhysician;
 
 
