@@ -3,18 +3,26 @@ package com.github.trstndev.medimanager.model;
 import com.github.trstndev.medimanager.model.reference.Role;
 import com.github.trstndev.medimanager.model.reference.Specialty;
 import jakarta.persistence.*;
+
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Entity
+@Table(name = "physicians")
 public class Physician {
 
+    // Technical Primary Key via UUID
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "hpcsaId", updatable = false, nullable = false)
-    private String hpcsaId; // The custom generated PK
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
-    @Column(length = 13, unique = true)
+    // Regulatory ID (HPCSA Registration number)
+    @Column(name = "hpcsa_number", unique = true, updatable = false)
+    private String hpcsaNumber;
+
+    @Column(name = "physician_rsa_id", length = 13, unique = true)
     private String physicianRsaId;
 
     @Transient
@@ -23,8 +31,13 @@ public class Physician {
     @Transient
     private String inputSurname;
 
+    @Column(name = "physician_name")
     private String physicianName;
+
+    @Column(name = "physician_surname")
     private String physicianSurname;
+
+//======================================================RELATIONSHIPS===================================================
 
     // Many Physicians can have One Role
     @ManyToOne
@@ -42,25 +55,7 @@ public class Physician {
 
     public Physician() {}
 
-    // GETTERS & SETTERS
-    public String getHpcsaId() { return hpcsaId; }
-    public void setHpcsaId(String hpcsaId) { this.hpcsaId = hpcsaId; }
-    public String getPhysicianRsaId() { return physicianRsaId; }
-    public void setPhysicianRsaId(String physicianRsaId) { this.physicianRsaId = physicianRsaId; }
-    public String getInputFirstName() { return inputFirstName; }
-    public void setInputFirstName(String inputFirstName) { this.inputFirstName = inputFirstName; }
-    public String getInputSurname() { return inputSurname; }
-    public void setInputSurname(String inputSurname) { this.inputSurname = inputSurname; }
-    public String getPhysicianName() { return physicianName; }
-    public void setPhysicianName(String physicianName) { this.physicianName = physicianName; }
-    public String getPhysicianSurname() { return physicianSurname; }
-    public void setPhysicianSurname(String physicianSurname) { this.physicianSurname = physicianSurname; }
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-    public Specialty getSpecialty() { return specialty; }
-    public void setSpecialty(Specialty specialty) { this.specialty = specialty; }
-    public List<Patient> getTreatedPatients() { return treatedPatients; }
-    public void setTreatedPatients(List<Patient> treatedPatients) { this.treatedPatients = treatedPatients; }
+//===================================================PREPERSIST LOGIC===================================================
 
     @PrePersist
     public void formatDataAndGenerateId() {
@@ -71,12 +66,42 @@ public class Physician {
             this.physicianSurname = this.inputSurname.trim();
         }
 
-        // Generate the HPCSA Number (e.g., JOHSMI12345)
-        if (this.hpcsaId == null && this.inputFirstName != null && this.inputSurname != null) {
-            String firstPart = String.format("%-3s", this.inputFirstName).replace(' ', 'X').substring(0, 3).toUpperCase();
-            String secondPart = String.format("%-3s", this.inputSurname).replace(' ', 'X').substring(0, 3).toUpperCase();
-            String randomNums = String.format("%05d", new Random().nextInt(100000));
-            this.hpcsaId = firstPart + secondPart + randomNums;
+        // Generate a mock HPCSA number (e.g., MP123456)
+        if (this.hpcsaNumber == null) {
+            this.hpcsaNumber = "MP" + String.format("%06d", new Random().nextInt(1000000));
         }
     }
+
+//===================================================GETTERS & SETTERS==================================================
+
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
+
+    public String getHpcsaNumber() { return hpcsaNumber; }
+    public void setHpcsaNumber(String hpcsaNumber) { this.hpcsaNumber = hpcsaNumber; }
+
+    public String getPhysicianRsaId() { return physicianRsaId; }
+    public void setPhysicianRsaId(String physicianRsaId) { this.physicianRsaId = physicianRsaId; }
+
+    public String getInputFirstName() { return inputFirstName; }
+    public void setInputFirstName(String inputFirstName) { this.inputFirstName = inputFirstName; }
+
+    public String getInputSurname() { return inputSurname; }
+    public void setInputSurname(String inputSurname) { this.inputSurname = inputSurname; }
+
+    public String getPhysicianName() { return physicianName; }
+    public void setPhysicianName(String physicianName) { this.physicianName = physicianName; }
+
+    public String getPhysicianSurname() { return physicianSurname; }
+    public void setPhysicianSurname(String physicianSurname) { this.physicianSurname = physicianSurname; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+
+    public Specialty getSpecialty() { return specialty; }
+    public void setSpecialty(Specialty specialty) { this.specialty = specialty; }
+
+    public List<Patient> getTreatedPatients() { return treatedPatients; }
+    public void setTreatedPatients(List<Patient> treatedPatients) { this.treatedPatients = treatedPatients; }
+
 }
