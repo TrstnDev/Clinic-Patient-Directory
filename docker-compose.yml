@@ -2,14 +2,27 @@ services:
   postgres:
     image: arm64v8/postgres:18.3
     container_name: clinic_db
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: clinic_admin
-      POSTGRES_PASSWORD: Delta66680003*
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
       POSTGRES_DB: clinic_directory
     ports:
-      - "5432:5432"
+      # Strictly binds to localhost for security
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql
+    networks:
+      - medimanager_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d clinic_directory"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   pgdata:
+
+networks:
+  medimanager_net:
+    driver: bridge
