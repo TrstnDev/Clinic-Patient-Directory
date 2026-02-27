@@ -46,7 +46,7 @@ public class Physician {
 
     // Many Physicians can have One Specialty
     @ManyToOne
-    @JoinColumn(name = "specialty_code")
+    @JoinColumn(name = "specialty_id")
     private Specialty specialty;
 
     // One Physician treats Many Patients

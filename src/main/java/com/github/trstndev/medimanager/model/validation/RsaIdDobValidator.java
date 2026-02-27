@@ -7,24 +7,27 @@ import java.time.format.DateTimeFormatter;
 
 public class RsaIdDobValidator implements ConstraintValidator<ValidRsaIdMatchingDob, Patient> {
 
+    // Defined formatters as constants to save memory allocation
+    private static final DateTimeFormatter RSA_ID_DATE_FORMAT = DateTimeFormatter.ofPattern("yyMMdd");
+
     @Override
     public boolean isValid(Patient patient, ConstraintValidatorContext context) {
-        // 1. If either field is missing, skip this validation
+
+        // If either field is missing, skip this validation
         // @NotNull annotations handle empty fields
         if (patient.getPatientRsaId() == null || patient.getDateOfBirth() == null) {
             return true;
         }
 
-        String rsaId = patient.getPatientRsaId();
+        String rsaId = patient.getPatientRsaId().trim();
 
-        // 2. Prevents string index errors if ID is incomplete
+        // Prevents string index errors if ID is incomplete
         if (rsaId.length() < 6) {
             return false;
         }
 
         // 3. Format the LocalDate to match SA ID prefix format (YYMMDD)
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
-        String expectedPrefix = patient.getDateOfBirth().format(formatter);
+        String expectedPrefix = patient.getDateOfBirth().format(RSA_ID_DATE_FORMAT);
         String actualPrefix = rsaId.substring(0, 6);
 
         // 4. Perform comparison
@@ -34,7 +37,9 @@ public class RsaIdDobValidator implements ConstraintValidator<ValidRsaIdMatching
         // Thymeleaf highlights the input box in red
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addPropertyNode("patientRsaId").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("patientRsaId")
+                    .addConstraintViolation();
         }
 
         return isValid;
