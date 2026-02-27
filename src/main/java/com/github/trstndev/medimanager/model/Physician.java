@@ -10,6 +10,8 @@ import java.util.Random;
 public class Physician {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "hpcsaId", updatable = false, nullable = false)
     private String hpcsaId; // The custom generated PK
 
     @Column(length = 13, unique = true)

@@ -15,6 +15,8 @@ import java.util.Random;
 @ValidRsaIdMatchingDob
 public class Patient {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "patientId", updatable = false, nullable = false)
     private String patientId;
 
     @NotNull(message = "RSA ID is required")
