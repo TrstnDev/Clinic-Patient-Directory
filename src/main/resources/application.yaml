@@ -1,11 +1,22 @@
 spring:
   datasource:
-    # Port, database name, and credentials match docker container setup
-    url: "jdbc:postgresql://localhost:5432/clinic_directory"
-    username: clinic_admin
-    password: Delta66680003*
+    # Syntax: ${ENVIRONMENT_VARIABLE:default_fallback_value}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/clinic_directory}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      #Connection pool optimisations for PostgreSQL
+      keepalive-time: 40000
+      max-lifetime: 540000
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          # Batches database inserts/updates for performance gains
+          batch_size: 50
+        order_inserts: true
+        order_updates: true

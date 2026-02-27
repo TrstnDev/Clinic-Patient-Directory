@@ -7,6 +7,8 @@ public class Diagnosis {
     @Id
     private String icd10Code; // e.g., J20.9 for Bronchitis
     private String diagnosisName;
+
+    @Column(columnDefinition = "TEXT")
     private String diagnosisDescription;
 
     public Diagnosis() {}
