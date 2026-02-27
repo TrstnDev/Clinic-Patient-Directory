@@ -61,7 +61,7 @@ public class Patient {
 
     // Primary Diagnosis (Many Patients can have One Primary Diagnosis)
     @ManyToOne
-    @JoinColumn(name = "primary_diagnosis_icd10")
+    @JoinColumn(name = "primary_diagnosis_id")
     private Diagnosis primaryDiagnosis;
 
     // Differential Diagnoses (Many Patients can have Many Differentials)
@@ -69,7 +69,7 @@ public class Patient {
     @JoinTable(
             name = "patient_differentials",
             joinColumns = @JoinColumn(name = "patient_id"),
-            inverseJoinColumns = @JoinColumn(name = "icd10_code")
+            inverseJoinColumns = @JoinColumn(name = "diagnosis_id")
     )
 
     private List<Diagnosis> patientDifferentials;
