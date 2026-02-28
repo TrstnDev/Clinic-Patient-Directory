@@ -59,7 +59,7 @@ public class PhysicianController {
                     physicians = matchRsa.map(List::of).orElseGet(List::of);
                     break;
                 case "Specialty":
-                    physicians = physicianRepository.findBySpecialty_SpecialtyNameContainingIgnoreCase(keyword);
+                    physicians = physicianRepository.findBySpecialty_SpecialtyTitleContainingIgnoreCase(keyword);
                     break;
                 default:
                     physicians = physicianRepository.findAll();

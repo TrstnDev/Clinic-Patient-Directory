@@ -24,5 +24,5 @@ public interface PhysicianRepository extends JpaRepository<Physician, UUID> {
     List<Physician> findByPhysicianSurnameContainingIgnoreCase(String physicianSurname);
 
     // 5. Search by specialty name
-    List<Physician> findBySpecialty_SpecialtyNameContainingIgnoreCase(String specialtyName);
+    List<Physician> findBySpecialty_SpecialtyTitleContainingIgnoreCase(String specialtyName);
 }

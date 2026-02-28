@@ -20,3 +20,4 @@ spring:
           batch_size: 50
         order_inserts: true
         order_updates: true
+    defer-datasource-initialization: true
