@@ -19,6 +19,39 @@
 <div class="container-fluid px-5">
     <h1 class="mb-4 text-primary">Clinic Patient Directory</h1>
 
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="card shadow-sm mb-4 border-secondary">
+        <div class="card-body py-2">
+            <form th:action="@{/patients}" method="get" class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <select name="searchType" class="form-select">
+                        <option value="Name" th:selected="${searchType == 'Name'}">First Name</option>
+                        <option value="Surname" th:selected="${searchType == 'Surname'}">Surname</option>
+                        <option value="File Number" th:selected="${searchType == 'File Number'}">File Number</option>
+                        <option value="RSA ID" th:selected="${searchType == 'RSA ID'}">RSA ID</option>
+                        <option value="Diagnosis" th:selected="${searchType == 'Diagnosis'}">Diagnosis</option>
+                        <option value="Physician" th:selected="${searchType == 'Physician'}">Physician</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="keyword" class="form-control" placeholder="Search query..." th:value="${keyword}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                    <a th:href="@{/patients}" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card shadow-sm mb-5 border-primary">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Admit New Patient</h4>
@@ -80,14 +113,14 @@
                     <label for="primaryDiagnosis" class="form-label">Primary Diagnosis (ICD-10)</label>
                     <select id="primaryDiagnosis" th:field="*{primaryDiagnosis}" class="form-select">
                         <option value="" disabled selected>Select diagnosis...</option>
-                        <option th:each="d : ${diagnosesList}" th:value="${d.icd10Code}" th:text="${d.icd10Code + ' - ' + d.diagnosisName}"></option>
+                        <option th:each="d : ${diagnosesList}" th:value="${d.id}" th:text="${d.icd10Code + ' - ' + d.diagnosisName}"></option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="treatingPhysician" class="form-label">Treating Physician</label>
                     <select id="treatingPhysician" th:field="*{treatingPhysician}" class="form-select">
                         <option value="" disabled selected>Assign physician...</option>
-                        <option th:each="doc : ${physiciansList}" th:value="${doc.hpcsaId}" th:text="${doc.physicianName + ' ' + doc.physicianSurname}"></option>
+                        <option th:each="doc : ${physiciansList}" th:value="${doc.id}" th:text="${doc.physicianName + ' ' + doc.physicianSurname}"></option>
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
@@ -102,29 +135,38 @@
             <table class="table table-striped table-hover mb-0">
                 <thead class="table-dark">
                 <tr>
-                    <th>Patient ID</th>
+                    <th>File Number</th>
                     <th>RSA ID</th>
                     <th>Name</th>
                     <th>DOB</th>
                     <th>Admission</th>
                     <th>Primary Diagnosis</th>
                     <th>Treating Physician</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="patient : ${patients}">
-                    <td th:text="${patient.patientId}">JOH1234</td>
-                    <td th:text="${patient.patientRsaId}">9001015000000</td>
-                    <td th:text="${patient.patientTitle + ' ' + patient.patientName + ' ' + patient.patientSurname}">Mr. John Doe</td>
-                    <td th:text="${patient.dateOfBirth}">1990-01-01</td>
-                    <td th:text="${patient.admissionDate}">2026-02-26</td>
-                    <td th:text="${patient.primaryDiagnosis?.diagnosisName + ' (' + patient.primaryDiagnosis?.icd10Code + ')'}">Bronchitis</td>
-                    <td th:text="${patient.treatingPhysician?.physicianName + ' ' + patient.treatingPhysician?.physicianSurname}">Dr. Smith</td>
+                    <td th:text="${patient.patientFileNumber}" class="fw-bold"></td>
+                    <td th:text="${patient.patientRsaId}"></td>
+                    <td th:text="${patient.patientTitle + ' ' + patient.patientName + ' ' + patient.patientSurname}"></td>
+                    <td th:text="${patient.dateOfBirth}"></td>
+                    <td th:text="${patient.admissionDate}"></td>
+                    <td th:text="${patient.primaryDiagnosis?.diagnosisName + ' (' + patient.primaryDiagnosis?.icd10Code + ')'}"></td>
+                    <td th:text="${patient.treatingPhysician?.physicianName + ' ' + patient.treatingPhysician?.physicianSurname}"></td>
+                    <td>
+                        <form th:action="@{/patients/delete-request}" method="post" class="d-inline">
+                            <input type="hidden" name="patientFileNumber" th:value="${patient.patientFileNumber}" />
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
