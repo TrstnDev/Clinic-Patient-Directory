@@ -8,6 +8,9 @@ spring:
       #Connection pool optimisations for PostgreSQL
       keepalive-time: 40000
       max-lifetime: 540000
+  sql:
+    init:
+      mode: always
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
