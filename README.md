@@ -1,82 +1,70 @@
-# Clinical Management System 
+# MediManager 🏥
 
-A full-stack, MVC-patterned web application designed to manage complex clinical data, patient admissions, and physician rosters. 
+MediManager is a robust, clinical-grade patient and physician management system built to modern healthcare IT standards. Designed to handle relational clinical data securely, this application separates administrative tracking from backend database architecture using enterprise best practices.
 
-Built as a portfolio project to explore enterprise Java development, this application bridges real-world medical data constraints with modern software engineering principles. I leverage my experience in Medicine and Medical Science, as well as work in the South African Public Health Sector to identify features that integrate well within a healthcare context. It features a highly normalized relational database schema, handling everything from South African National ID validation to ICD-10 differential diagnoses tracking.
-
-
-## 🚀 Key Features
-
-* **Relational Data Modeling:** Implements robust `@OneToMany` and `@ManyToMany` JPA relationships linking Patients, Physicians, Roles, Specialties, and Diagnoses.
-* **Custom Cross-Field Validation:** Utilizes custom Spring Validation annotations (e.g., verifying that a patient's Date of Birth perfectly matches the first six digits of their 13-digit South African RSA ID).
-* **Automated Data Generation:** Employs JPA `@PrePersist` lifecycle hooks to dynamically generate and format professional display names and unique HPCSA identification numbers. (future expansion of this project could see potential implementation of real HPCSA Numbers and validation; TBD.)
-* **Dynamic Search & Filtering:** Spring Data JPA query methods allow users to search the clinical database by patient name, diagnosis, ID, or treating physician.
-* **Responsive UI:** Server-side rendering with Thymeleaf and Bootstrap 5 for a clean, professional, and responsive user interface.
-
-
-## 🛠️ Tech Stack
-
-* **Language:** Java (JDK 25)
-* **Framework:** Spring Boot 4.0.3 (Spring Web, Spring Data JPA, Spring Validation)
-* **Database:** Microsoft SQL Server
-* **Frontend:** Thymeleaf (Template Engine), HTML5, Bootstrap 5
-* **Infrastructure:** Docker (Azure SQL Edge image)
+## 💻 Tech Stack
+* **Backend:** Java 25, Spring Boot 4.0.3 (Web, Data JPA, Validation)
+* **Frontend:** Thymeleaf, HTML5, Bootstrap 5.3.2
+* **Database:** PostgreSQL (Containerized via OrbStack/Docker)
 * **Build Tool:** Maven
 
+## ✨ Key Features
 
-## 🗄️ Database Architecture
+### 1. Clinical Record Management
+* **Patient Admission & Directory:** Securely onboard patients with strict data validation, including custom cross-field validation ensuring South African RSA ID numbers match the provided Date of Birth.
+* **Physician Roster:** Manage hospital staff, linking doctors to specific clinical roles (e.g., Medical Officer, Registrar) and specialties (e.g., Neurology, Cardiology).
+* **Decoupled Reference Data:** Utilizes global clinical standards like ICD-10 codes for diagnoses, designed to withstand future medical coding updates without breaking database relationships.
 
-The system relies on a normalized SQL database with the following core entities:
-* **Patients:** Tracks demographics, admission/discharge dates, and links to treating physicians.
-* **Physicians:** Tracks practitioner details, roles, and specialties.
-* **Diagnoses (Reference):** A lookup table of ICD-10 codes and descriptions.
-* **Specialties & Roles (Reference):** Lookup tables standardizing clinical roles and departments.
+### 2. Robust Search Architecture
+Built with specialized Spring Data JPA derived queries, the system allows hospital staff to search records via:
+* **Patients:** Name, Surname, Medical File Number, RSA ID, Diagnosis, or Treating Physician.
+* **Physicians:** Name, Surname, HPCSA Registration Number, RSA ID, or Specialty.
 
+### 3. Automated Clinical Identifiers
+To streamline front-desk operations and testing, the system automatically generates authentic-looking clinical identifiers upon record creation (e.g., HPCSA numbers like `MP123456` and sequential Medical Record Numbers) using JPA `@PrePersist` lifecycle hooks.
 
-## ⚙️ Getting Started
+## 🏗️ Database Architecture
+MediManager avoids the use of **Natural Keys**. 
+
+The system utilizes secure, immutable **UUIDs** (Surrogate Keys) for all table relationships. 
+* **Benefit:** If a medical board updates a specialty code or a patient's ID requires correction, the underlying database relationships remain intact, preventing cascading migration failures.
+
+## 🚀 Getting Started
 
 ### Prerequisites
-To run this project locally, you will need:
-* Java Development Kit (JDK) 25 or higher
+* Java 25 or higher
+* Docker (or OrbStack)
 * Maven
-* Docker Desktop
-* An IDE (IntelliJ IDEA, Rider, or VS Code)
 
-
-### Local Installation
+### Installation & Setup
 
 1. **Clone the repository:**
-   
-   ```git clone https://github.com/TrstnDev/Clinic-Patient-Directory.git```
+   ```bash
+   git clone [https://github.com/trstndev/medimanager.git](https://github.com/trstndev/medimanager.git)
+   cd medimanager
 
+2. **Configure Database Credentials:**
+   Create a ```.env``` file in the root directory to securely pass your credentials to the Docker
+   container:
+   ```bash
+   DB_USERNAME=clinic-admin
+   DB_PASSWORD=your_secure_password
 
-2. **Spin up the Database via Docker:**
-   
-   *Note for Apple Silicon users; This project uses the ```azure-sql-edge``` image for native ARM64 compatibility.*
-   
-    ```docker run -e "ACCEPT_EULA=Y" -e "MSSQL_<yourpreferredusername>_PASSWORD=<yourpassword123!>" -p <yourpreferredport>:<yourpreferredport> --name <yourpreferredcontainername> -d mcr.microsoft.com/azure-sql-edge```
+3. **Start the PostgreSQl Database:**
+   ```bash
+   docker compose up -d
 
+4. **Run the Application:**
+   Start the application via your IDE or the command line. Spring Boot will automatically wait for
+   Hibernate to generate the UUID-based tables, and then execute ```data.sql``` to populate the
+   reference data (Roles, Specialities, and Diagnoses).
+   ```bash
+   ./mvnw spring-boot:run
 
-3. **Configure Application Properties:**
-   
-   Ensure your ```src/main/resources/application.yaml``` matches your specific Docker credentials.
+5. **Access the Sytem:**
+   Navigate to ```http://localhost:8080/patients``` in your web browser.
 
-
-4. **Run the Application**
-   
-   Execute the maven wrapper command to start the Spring Boot application:
-   
-   ```./mvnw spring-boot:run```
-
-   The application will be available at:
-
-   ```http://localhost:8080```
-
-
-## Author
-
-**T. Kriel**
-
-Developed to showcase the combination of my deep academic and practical background in medicine and medical science with modern software engineering and cloud development practices.
-
-:) 
+## 🛣️ Future Roadmap ##
+* **Service Layer Refactoring:** Abstracting business logic out of controllers and into dedicated ```@Service``` components.
+* **Soft Deletion:** Upgrading the current hard-delete functionality to comply with clinical data retention policies (e.g., ```isActive = false```).
+* **Security Authentication:** Implementing Spring Security with Role-Based Access Control (BRAC) to separate Admin, Doctor, and Receptionist permissions.
